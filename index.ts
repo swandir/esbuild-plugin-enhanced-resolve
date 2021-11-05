@@ -1,87 +1,74 @@
-import { builtinModules } from "module";
-import { readFile } from "fs/promises";
 import esbuild from "esbuild";
 import enhancedResolve from "enhanced-resolve";
+import { builtinModules } from "module";
 
-const resolve = (
-  resolveDir: string,
-  path: string,
-  options: Partial<enhancedResolve.ResolveOptions>
-) => {
-  return new Promise<string>((fulfill, reject) => {
-    enhancedResolve.create(options)(
-      path,
-      resolveDir,
-      (err: unknown, result: string) => {
-        err ? reject(err) : fulfill(result);
-      }
-    );
-  });
-};
-
-const aliasFields = (platform: esbuild.Platform | undefined) => {
-  return platform === "browser" ? ["browser"] : [];
-};
-
-const mainFields = (platform: esbuild.Platform | undefined) => {
-  return platform === "browser"
-    ? ["browser", "module", "main"]
-    : ["module", "main"];
-};
-
-const conditionNames = (
-  importKind: esbuild.ImportKind,
-  platform: esbuild.Platform | undefined
-) => {
-  const conditionNames: string[] = [];
-  switch (importKind) {
-    case "dynamic-import":
-    case "import-statement":
-      conditionNames.push("import");
-      break;
-    case "require-call":
-    case "require-resolve":
-      conditionNames.push("require");
-  }
-  if (platform === "node") {
-    conditionNames.push("node");
-  }
-  return conditionNames;
-};
-
-export const enhancedResolvePlugin = ({
+const plugin = ({
   filter = /()/,
-  load = true,
 }: {
   filter?: RegExp;
-  load?: boolean;
 } = {}): esbuild.Plugin => {
   return {
     name: "enhanced-resolve",
     setup: async (build) => {
       build.onResolve({ filter }, async (args) => {
         if (builtinModules.includes(args.path)) {
-          return;
+          return undefined;
         }
-        return {
-          path: await resolve(args.path, args.resolveDir || process.cwd(), {
-            aliasFields: aliasFields(build.initialOptions.platform),
-            mainFields:
-              build.initialOptions.mainFields ??
-              mainFields(build.initialOptions.platform),
-            conditionNames:
-              build.initialOptions.conditions ??
-              conditionNames(args.kind, build.initialOptions.platform),
+
+        const isNode =
+          build.initialOptions.platform === "node" ||
+          build.initialOptions.conditions?.includes("node");
+
+        const isBrowser =
+          build.initialOptions.platform === undefined ||
+          build.initialOptions.platform === "browser" ||
+          build.initialOptions.conditions?.includes("browser") ||
+          build.initialOptions.mainFields?.includes("browser");
+
+        const isImport =
+          args.kind === "dynamic-import" || args.kind === "import-statement";
+
+        const isRequire =
+          args.kind === "require-call" || args.kind === "require-resolve";
+
+        const pick = (o: object) =>
+          Object.entries(o).flatMap(([key, value]) => (value ? key : []));
+
+        const resolve = enhancedResolve.create({
+          conditionNames:
+            build.initialOptions.conditions ??
+            pick({
+              import: isImport,
+              require: isRequire,
+              node: isNode,
+            }),
+          mainFields:
+            build.initialOptions.mainFields ??
+            pick({
+              browser: isBrowser,
+              module: isImport,
+              main: true,
+            }),
+          aliasFields: pick({
+            browser: isBrowser,
           }),
+        });
+
+        return {
+          path: await new Promise((fulfill, reject) =>
+            resolve(
+              args.resolveDir,
+              args.path,
+              (err: Error, resolved: string) =>
+                err ? reject(err) : fulfill(resolved)
+            )
+          ),
         };
       });
-      if (load) {
-        build.onLoad({ filter }, async (args) => {
-          return {
-            contents: await readFile(args.path),
-          };
-        });
-      }
     },
   };
 };
+
+export default plugin;
+module.exports = plugin;
+plugin["default"] = plugin;

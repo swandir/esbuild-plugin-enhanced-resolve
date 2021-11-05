@@ -1,6 +1,10 @@
 {
   "name": "esbuild-plugin-enhanced-resolve",
-  "version": "0.2.0",
+  "version": "0.3.0",
+  "keywords": [
+    "esbuild",
+    "enhanced-resolve"
+  ],
   "license": "ISC",
   "packageManager": "yarn@3.1.0",
   "workspaces": [
@@ -28,6 +32,6 @@
     "typescript": "^4.4.4"
   },
   "peerDependencies": {
-    "esbuild": "^0.13.9"
+    "esbuild": "^0.13.12"
   }
 }

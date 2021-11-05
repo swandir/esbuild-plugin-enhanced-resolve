@@ -7,7 +7,7 @@
     "vfile": "^5.1.1"
   },
   "devDependencies": {
-    "esbuild": "^0.13.9",
+    "esbuild": "^0.13.12",
     "esbuild-plugin-enhanced-resolve": "workspace:*"
   }
 }
