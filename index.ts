@@ -11,13 +11,23 @@ const plugin = ({
     name: "enhanced-resolve",
     setup: async (build) => {
       build.onResolve({ filter }, async (args) => {
-        if (builtinModules.includes(args.path)) {
-          return undefined;
+        if (build.initialOptions.external?.includes(args.path)) {
+          return;
         }
 
         const isNode =
           build.initialOptions.platform === "node" ||
           build.initialOptions.conditions?.includes("node");
+
+        if (
+          isNode &&
+          [
+            ...builtinModules,
+            ...builtinModules.map((module) => `node:${module}`),
+          ].includes(args.path)
+        ) {
+          return;
+        }
 
         const isBrowser =
           build.initialOptions.platform === undefined ||
@@ -35,6 +45,14 @@ const plugin = ({
           Object.entries(o).flatMap(([key, value]) => (value ? key : []));
 
         const resolve = enhancedResolve.create({
+          extensions: build.initialOptions.resolveExtensions ?? [
+            ".tsx",
+            ".ts",
+            ".jsx",
+            ".js",
+            ".css",
+            ".json",
+          ],
           conditionNames:
             build.initialOptions.conditions ??
             pick({
