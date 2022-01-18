@@ -72,16 +72,27 @@ const plugin = ({
           }),
         });
 
-        return {
-          path: await new Promise((fulfill, reject) =>
+        const resolved = await new Promise<string | false | undefined>(
+          (fulfill, reject) =>
             resolve(
               args.resolveDir,
               args.path,
               (err: Error, resolved: string) =>
                 err ? reject(err) : fulfill(resolved)
             )
-          ),
-        };
+        );
+
+        if (resolved === false) {
+          return {
+            external: true,
+          };
+        }
+
+        if (resolved) {
+          return {
+            path: resolved,
+          };
+        }
       });
     },
   };

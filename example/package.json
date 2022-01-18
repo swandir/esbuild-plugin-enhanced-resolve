@@ -3,11 +3,12 @@
     "build": "node build.js"
   },
   "dependencies": {
+    "@loaders.gl/loader-utils": "^3.1.6",
     "uuid": "^8.3.2",
     "vfile": "^5.1.1"
   },
   "devDependencies": {
-    "esbuild": "^0.14.5",
+    "esbuild": "^0.14.11",
     "esbuild-plugin-enhanced-resolve": "workspace:*"
   }
 }
