@@ -56,9 +56,12 @@ const plugin = ({
           conditionNames:
             build.initialOptions.conditions ??
             pick({
+              browser: isBrowser,
+              module: isBrowser && isImport,
               import: isImport,
               require: isRequire,
               node: isNode,
+              default: true,
             }),
           mainFields:
             build.initialOptions.mainFields ??
