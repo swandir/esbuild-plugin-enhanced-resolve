@@ -90,7 +90,7 @@ const plugin = ({
 
         if (resolved) {
           return {
-            path: resolved,
+            path: resolved.replace(/\0/g, ''),
           };
         }
       });
