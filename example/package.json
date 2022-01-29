@@ -4,6 +4,7 @@
   },
   "dependencies": {
     "@loaders.gl/loader-utils": "^3.1.6",
+    "es5-ext": "^0.10.53",
     "uuid": "^8.3.2",
     "vfile": "^5.1.1"
   },

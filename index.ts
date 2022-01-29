@@ -77,8 +77,8 @@ const plugin = ({
             resolve(
               args.resolveDir,
               args.path,
-              (err: Error, resolved: string) =>
-                err ? reject(err) : fulfill(resolved)
+              (err: Error, _: unknown, resolved: { path: string }) =>
+                err ? reject(err) : fulfill(resolved.path)
             )
         );
 
