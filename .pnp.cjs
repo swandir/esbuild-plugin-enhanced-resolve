@@ -538,6 +538,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["es5-ext", "npm:0.10.53"],
             ["esbuild", "npm:0.14.11"],
             ["esbuild-plugin-enhanced-resolve", "virtual:35703b8740ca72fd885c3bc2c01804c352280c366151cfa267f5490b7ee684d7fb1a93c05166ccfb81c658d5a963f70a8daa761c06031023ff98e8729a315f94#workspace:."],
+            ["jsonpath-plus", "npm:6.0.1"],
             ["uuid", "npm:8.3.2"],
             ["vfile", "npm:5.1.1"]
           ],
@@ -568,6 +569,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/is-buffer-npm-2.0.5-17e563f277-764c9ad8b5.zip/node_modules/is-buffer/",
           "packageDependencies": [
             ["is-buffer", "npm:2.0.5"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["jsonpath-plus", [
+        ["npm:6.0.1", {
+          "packageLocation": "./.yarn/cache/jsonpath-plus-npm-6.0.1-2682c74de8-bddec34b74.zip/node_modules/jsonpath-plus/",
+          "packageDependencies": [
+            ["jsonpath-plus", "npm:6.0.1"]
           ],
           "linkType": "HARD",
         }]

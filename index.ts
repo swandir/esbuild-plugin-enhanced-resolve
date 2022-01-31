@@ -58,6 +58,7 @@ const plugin = ({
             pick({
               import: isImport,
               require: isRequire,
+              browser: isBrowser,
               node: isNode,
             }),
           mainFields:

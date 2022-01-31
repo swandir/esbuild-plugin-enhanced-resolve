@@ -503,6 +503,7 @@ __metadata:
     es5-ext: ^0.10.53
     esbuild: ^0.14.11
     esbuild-plugin-enhanced-resolve: "workspace:*"
+    jsonpath-plus: ^6.0.1
     uuid: ^8.3.2
     vfile: ^5.1.1
   languageName: unknown
@@ -528,6 +529,13 @@ __metadata:
   version: 2.0.5
   resolution: "is-buffer@npm:2.0.5"
   checksum: 764c9ad8b523a9f5a32af29bdf772b08eb48c04d2ad0a7240916ac2688c983bf5f8504bf25b35e66240edeb9d9085461f9b5dae1f3d2861c6b06a65fe983de42
+  languageName: node
+  linkType: hard
+
+"jsonpath-plus@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "jsonpath-plus@npm:6.0.1"
+  checksum: bddec34b742249c5b38077dfcd8eb479fab4e077943253017326503ce4f527ef66938288c728712fd923907493d6eaba69a43015dc3dd9fdf48d89028ae7f466
   languageName: node
   linkType: hard
 
