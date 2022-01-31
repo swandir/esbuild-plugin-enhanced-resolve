@@ -18,7 +18,14 @@ esbuild.build({
   entryPoints: ["src/index.js"],
   bundle: true,
   outfile: "out/browser.js",
-  plugins: [enhancedResolve(), readFile()],
+  plugins: [
+    enhancedResolve({
+      alias: {
+        tslib: "tslib/tslib.es6.js",
+      },
+    }),
+    readFile(),
+  ],
 });
 
 esbuild.build({

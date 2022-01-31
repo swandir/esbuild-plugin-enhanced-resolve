@@ -4,8 +4,10 @@ import { builtinModules } from "module";
 
 const plugin = ({
   filter = /()/,
+  alias = {},
 }: {
   filter?: RegExp;
+  alias?: Record<string, string>;
 } = {}): esbuild.Plugin => {
   return {
     name: "enhanced-resolve",
@@ -68,6 +70,7 @@ const plugin = ({
               module: isImport,
               main: true,
             }),
+          alias: alias,
           aliasFields: pick({
             browser: isBrowser,
           }),
