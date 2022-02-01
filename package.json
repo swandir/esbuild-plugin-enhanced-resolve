@@ -1,6 +1,6 @@
 {
   "name": "esbuild-plugin-enhanced-resolve",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "keywords": [
     "esbuild",
     "enhanced-resolve"
