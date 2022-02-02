@@ -22,9 +22,24 @@ esbuild.build({
 });
 
 esbuild.build({
-  entryPoints: ["src/index.js"],
   platform: "node",
+  entryPoints: ["src/index.js"],
   bundle: true,
   outfile: "out/node.js",
   plugins: [enhancedResolve(), readFile()],
+});
+
+esbuild.build({
+  platform: "node",
+  entryPoints: ["src/index.js"],
+  bundle: true,
+  outfile: "out/custom.js",
+  plugins: [
+    enhancedResolve({
+      options: {
+        conditionNames: ["import", "module", "browser"],
+      },
+    }),
+    readFile(),
+  ],
 });

@@ -4,8 +4,10 @@ import { builtinModules } from "module";
 
 const plugin = ({
   filter = /()/,
+  options,
 }: {
   filter?: RegExp;
+  options?: Record<string, unknown>;
 } = {}): esbuild.Plugin => {
   return {
     name: "enhanced-resolve",
@@ -45,15 +47,18 @@ const plugin = ({
           Object.entries(o).flatMap(([key, value]) => (value ? key : []));
 
         const resolve = enhancedResolve.create({
-          extensions: build.initialOptions.resolveExtensions ?? [
-            ".tsx",
-            ".ts",
-            ".jsx",
-            ".js",
-            ".css",
-            ".json",
-          ],
+          ...options,
+          extensions: options?.extensions ??
+            build.initialOptions.resolveExtensions ?? [
+              ".tsx",
+              ".ts",
+              ".jsx",
+              ".js",
+              ".css",
+              ".json",
+            ],
           conditionNames:
+            options?.conditionNames ??
             build.initialOptions.conditions ??
             pick({
               import: isImport,
@@ -63,15 +68,18 @@ const plugin = ({
               node: isNode,
             }),
           mainFields:
+            options?.mainFields ??
             build.initialOptions.mainFields ??
             pick({
               browser: isBrowser,
               module: isImport,
               main: true,
             }),
-          aliasFields: pick({
-            browser: isBrowser,
-          }),
+          aliasFields:
+            options?.aliasFields ??
+            pick({
+              browser: isBrowser,
+            }),
         });
 
         const resolved = await new Promise<string | false | undefined>(
